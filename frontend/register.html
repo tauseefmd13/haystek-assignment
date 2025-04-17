@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <input type="text" id="phone" name="phone" placeholder="Phone" required>
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            var phonePattern = /^[0-9]{10}$/;
+            var usernamePattern = /^\S+$/;
+
+            var firstName = document.getElementById("firstName").value;
+            var lastName = document.getElementById("lastName").value;
+            var email = document.getElementById("email").value;
+            var phone = document.getElementById("phone").value;
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (!firstName) {
+                alert("Please enter your first name.");
+                return;
+            }
+
+            if (!lastName) {
+                alert("Please enter your last name.");
+                return;
+            }
+
+            if (!email) {
+                alert("Please enter your email address.");
+                return;
+            }
+
+            if (!phone) {
+                alert("Please enter your phone number.");
+                return;
+            }
+
+            if (!username) {
+                alert("Please enter a username.");
+                return;
+            }
+
+            if (!password) {
+                alert("Please enter a password.");
+                return;
+            }
+
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+
+            if (!phonePattern.test(phone)) {
+                alert("Please enter a valid 10-digit phone number.");
+                return;
+            }
+
+            if (!usernamePattern.test(username)) {
+                alert("Username should not contain spaces.");
+                return;
+            }
+
+            var users = JSON.parse(localStorage.getItem("users")) || [];
+
+            if (users.some(user => user.email === email)) {
+                alert("Email is already registered.");
+                return;
+            }
+
+            if (users.some(user => user.username === username)) {
+                alert("Username is already taken.");
+                return;
+            }
+
+            var newUser = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                username: username,
+                password: password
+            };
+
+            users.push(newUser);
+            localStorage.setItem("users", JSON.stringify(users));
+            alert("Registration successful!");
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+
+</html>
